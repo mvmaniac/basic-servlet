@@ -1,4 +1,4 @@
-# Servlet Basic
+# Basic Servlet
 
 1. **자바 웹 프로그래밍 Next Step 책의 실습 예제 기반**
     * 원본 소스는 [jwp-basic](https://github.com/slipp/jwp-basic "jwp-basic") 임.
