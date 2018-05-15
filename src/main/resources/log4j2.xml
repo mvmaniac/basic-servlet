@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Properties>
+        <Property name="baseDir">./</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level [%t] %logger{36}:%L - %msg%n"/>
+        </Console>
+        <RollingFile name="File" fileName="${baseDir}/log/today.log" filePattern="${baseDir}/log/today.log.%d{yyyy-MM-dd}" append="true">
+            <PatternLayout pattern="[%d] %-5p %l - %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1">
+                <Delete basePath="${baseDir}/log">
+                    <IfFileName glob="today.log.*">
+                        <IfLastModified age="30d">
+                            <IfAccumulatedFileCount exceeds="10"/>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="io.devfactory.core" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="io.devfactory.next" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
