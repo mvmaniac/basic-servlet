@@ -1,25 +1,13 @@
-package io.devfactory.next;
+package io.devfactory.next.dao;
 
-import io.devfactory.core.jdbc.ConnectionManager;
-import io.devfactory.next.dao.UserDao;
 import io.devfactory.next.model.User;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class UserDaoTest {
-    @Before
-    public void setup() {
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("jwp.sql"));
-        DatabasePopulatorUtils.execute(populator, ConnectionManager.getDataSource());
-    }
 
     @Test
     public void crud() throws Exception {

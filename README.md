@@ -5,8 +5,9 @@
 
 2. **차이점**
     * pom.xml 라이브러리 최신화
+    * logback => log4j2 로 변경
+    * h2 db => mysql 로 변경
 
 3. **TODO**
     * 12장까지 실습
-    * DB 변경
     * 프론트 엔드 UI 최신화
