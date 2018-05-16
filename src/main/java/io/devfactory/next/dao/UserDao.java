@@ -12,8 +12,10 @@ public class UserDao {
 
     public void insert(User user) {
 
+        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)", user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void update(User user) {
@@ -24,6 +26,8 @@ public class UserDao {
 
     public List<User> findAll() {
 
+        String sql = "SELECT userId, password, name, email FROM USERS";
+
         RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs) throws SQLException {
@@ -36,11 +40,13 @@ public class UserDao {
         };
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        return jdbcTemplate.query("SELECT userId, password, name, email FROM USERS", rowMapper);
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     public User findByUserId(String userId) {
 
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid = ?";
+
         RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs) throws SQLException {
@@ -53,6 +59,6 @@ public class UserDao {
         };
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        return jdbcTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userid = ?", rowMapper, userId);
+        return jdbcTemplate.queryForObject(sql, rowMapper, userId);
     }
 }

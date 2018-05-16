@@ -1,6 +1,10 @@
 package io.devfactory.core.mvc;
 
 import io.devfactory.next.controller.*;
+import io.devfactory.next.controller.qna.AddAnswerController;
+import io.devfactory.next.controller.qna.DeleteAnswerController;
+import io.devfactory.next.controller.qna.ShowController;
+import io.devfactory.next.controller.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +28,9 @@ public class RequestMapping {
         mappings.put("/users/create", new CreateUserController());
         mappings.put("/users/updateForm", new UpdateFormUserController());
         mappings.put("/users/update", new UpdateUserController());
+        mappings.put("/qna/show", new ShowController());
+        mappings.put("/api/qna/addAnswer", new AddAnswerController());
+        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
 
         logger.info("Initialized Request Mapping!");
     }
