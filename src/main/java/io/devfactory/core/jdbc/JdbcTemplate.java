@@ -9,6 +9,14 @@ import java.util.List;
 
 public class JdbcTemplate {
 
+    private static JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+    private JdbcTemplate() {}
+
+    public static JdbcTemplate getInstance() {
+        return jdbcTemplate;
+    }
+
     public void update(String sql, Object... parameters) {
         update(sql, createPreparedStatementSetter(parameters));
     }
@@ -19,7 +27,7 @@ public class JdbcTemplate {
              PreparedStatement pstmt = con.prepareStatement(sql)) {
 
             pss.setValues(pstmt);
-            pstmt.executeUpdate();
+            int cont = pstmt.executeUpdate();
 
         } catch (SQLException e) {
           throw new DataAccessException(e);

@@ -15,7 +15,7 @@ public class UpdateUserController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateUserController.class);
 
-    private UserDao userDao = new UserDao();
+    private UserDao userDao = UserDao.getInstance();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -31,6 +31,8 @@ public class UpdateUserController extends AbstractController {
         logger.debug("Update User : {}", updateUser);
 
         user.update(updateUser);
+        userDao.update(user);
+
         return jspView("redirect:/");
     }
 }

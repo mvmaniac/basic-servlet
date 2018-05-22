@@ -1,16 +1,13 @@
-package io.devfactory.next.controller.user;
+package io.devfactory.next.controller.qna;
 
 import io.devfactory.core.mvc.AbstractController;
 import io.devfactory.core.mvc.ModelAndView;
 import io.devfactory.next.controller.UserSessionUtils;
-import io.devfactory.next.dao.UserDao;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ListUserController extends AbstractController {
-
-    private UserDao userDao = UserDao.getInstance();
+public class CreateFormQuestionController extends AbstractController {
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -19,6 +16,6 @@ public class ListUserController extends AbstractController {
             return jspView("redirect:/users/loginForm");
         }
 
-        return jspView("/user/list.jsp").addObject("users", userDao.findAll());
+        return jspView("/qna/form.jsp");
     }
 }

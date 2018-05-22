@@ -1,19 +1,18 @@
-package io.devfactory.next.controller;
+package io.devfactory.next.controller.qna;
 
-import io.devfactory.core.mvc.*;
+import io.devfactory.core.mvc.AbstractController;
+import io.devfactory.core.mvc.ModelAndView;
 import io.devfactory.next.dao.QuestionDao;
-import io.devfactory.next.dao.UserDao;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HomeController extends AbstractController {
+public class ApiListQuestionController extends AbstractController {
 
     private QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-        return jspView("home.jsp").addObject("questions", questionDao.findAll());
+        return jsonView().addObject("questions", questionDao.findAll());
     }
 }

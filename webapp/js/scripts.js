@@ -17,7 +17,7 @@ function addAnswer(e) {
 
     $.ajax({
         type: "post",
-        url: "/api/qna/answer",
+        url: "/api/qna/addAnswer",
         data: queryString,
         dataType: "json",
         error: onError,
@@ -32,10 +32,16 @@ function onError(jqXHR, status) {
 
 function onSuccess(json, status) {
 
-    var answerTemplate = $("#answerTemplate").html();
-    var template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId);
+    var result = json.result;
 
-    $("div.qna-comment-slipp-articles").prepend(template);
+    if (result.status) {
+        var answer = json.answer;
+        var answerTemplate = $("#answerTemplate").html();
+        var template = answerTemplate.format(answer.writer, new Date(answer.createdDate), answer.contents, answer.answerId, answer.answerId);
+        $("div.qna-comment-slipp-articles").prepend(template);
+    } else {
+        alert(result.message);
+    }
 }
 
 $(".qna-comment").on("click", ".form-delete", deleteAnswer);

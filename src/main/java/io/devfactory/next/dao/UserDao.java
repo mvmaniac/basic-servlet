@@ -10,23 +10,30 @@ import java.util.List;
 
 public class UserDao {
 
+    private static UserDao userDao = new UserDao();
+
+    private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
+    private UserDao() {}
+
+    public static UserDao getInstance() {
+        return userDao;
+    }
+
     public void insert(User user) {
 
-        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "INSERT INTO users VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void update(User user) {
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?", user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+        jdbcTemplate.update("UPDATE users SET password = ?, name = ?, email = ? WHERE userId = ?", user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
     public List<User> findAll() {
 
-        String sql = "SELECT userId, password, name, email FROM USERS";
+        String sql = "SELECT userId, password, name, email FROM users";
 
         RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
@@ -39,13 +46,12 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     public User findByUserId(String userId) {
 
-        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid = ?";
+        String sql = "SELECT userId, password, name, email FROM users WHERE userid = ?";
 
         RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
@@ -58,7 +64,6 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         return jdbcTemplate.queryForObject(sql, rowMapper, userId);
     }
 }
