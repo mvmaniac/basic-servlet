@@ -14,8 +14,6 @@ import java.io.IOException;
 @WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private RequestMapping rm;
@@ -33,15 +31,13 @@ public class DispatcherServlet extends HttpServlet {
         logger.debug("Method : {}, Request URI : {}", request.getMethod(), requestUri);
 
         Controller controller = rm.findController(requestUri);
-
-        if (controller == null) {
-            logger.error("Controller : null");
-            return;
-        }
+        ModelAndView mav;
 
         try {
-            View view = controller.execute(request, response);
-            view.render(request, response);
+            mav = controller.execute(request, response);
+
+            View view = mav.getView();
+            view.render(mav.getModel(), request, response);
 
         } catch (Throwable e) {
             logger.error("Exception : {}", e);

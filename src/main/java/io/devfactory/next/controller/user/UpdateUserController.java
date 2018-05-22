@@ -1,6 +1,7 @@
 package io.devfactory.next.controller.user;
 
-import io.devfactory.core.mvc.Controller;
+import io.devfactory.core.mvc.AbstractController;
+import io.devfactory.core.mvc.ModelAndView;
 import io.devfactory.next.controller.UserSessionUtils;
 import io.devfactory.next.dao.UserDao;
 import io.devfactory.next.model.User;
@@ -10,14 +11,15 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UpdateUserController implements Controller {
+public class UpdateUserController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateUserController.class);
 
-    @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    private UserDao userDao = new UserDao();
 
-        UserDao userDao = new UserDao();
+    @Override
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+
         User user = userDao.findByUserId(req.getParameter("userId"));
 
         if (!UserSessionUtils.isSameUser(req.getSession(), user)) {
@@ -29,6 +31,6 @@ public class UpdateUserController implements Controller {
         logger.debug("Update User : {}", updateUser);
 
         user.update(updateUser);
-        return "redirect:/";
+        return jspView("redirect:/");
     }
 }

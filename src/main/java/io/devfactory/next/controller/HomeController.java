@@ -1,21 +1,19 @@
 package io.devfactory.next.controller;
 
-import io.devfactory.core.mvc.Controller;
-import io.devfactory.core.mvc.JspView;
-import io.devfactory.core.mvc.View;
+import io.devfactory.core.mvc.*;
+import io.devfactory.next.dao.QuestionDao;
 import io.devfactory.next.dao.UserDao;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HomeController implements Controller {
+public class HomeController extends AbstractController {
+
+    private QuestionDao questionDao = new QuestionDao();
 
     @Override
-    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
-        UserDao userDao = new UserDao();
-        req.setAttribute("users", userDao.findAll());
-
-        return new JspView("home.jsp");
+        return jspView("home.jsp").addObject("questions", questionDao.findAll());
     }
 }
