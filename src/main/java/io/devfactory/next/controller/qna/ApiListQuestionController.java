@@ -12,7 +12,7 @@ public class ApiListQuestionController extends AbstractController {
     private QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return jsonView().addObject("questions", questionDao.findAll());
     }
 }

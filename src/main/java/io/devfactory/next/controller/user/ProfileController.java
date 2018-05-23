@@ -13,9 +13,9 @@ public class ProfileController extends AbstractController {
     private UserDao userDao = UserDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String userId = req.getParameter("userId");
+        String userId = request.getParameter("userId");
 
         User user = userDao.findByUserId(userId);
 

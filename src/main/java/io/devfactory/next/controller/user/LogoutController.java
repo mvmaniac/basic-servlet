@@ -11,9 +11,9 @@ import javax.servlet.http.HttpSession;
 public class LogoutController extends AbstractController {
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        HttpSession session = req.getSession();
+        HttpSession session = request.getSession();
         session.removeAttribute(UserSessionUtils.USER_SESSION_KEY);
 
         return jspView("redirect:/");

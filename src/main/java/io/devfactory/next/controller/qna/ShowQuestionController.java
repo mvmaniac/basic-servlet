@@ -17,9 +17,9 @@ public class ShowQuestionController extends AbstractController {
     private AnswerDao answerDao = AnswerDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        long questionId = Long.parseLong(req.getParameter("questionId"));
+        long questionId = Long.parseLong(request.getParameter("questionId"));
 
         Question question = questionDao.findById(questionId);
         List<Answer> answers = answerDao.findAllByQuestionId(questionId);

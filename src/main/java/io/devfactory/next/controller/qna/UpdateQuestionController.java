@@ -14,21 +14,21 @@ public class UpdateQuestionController extends AbstractController {
     private QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (!UserSessionUtils.isLogined(req.getSession())) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");
         }
 
-        long questionId = Long.parseLong(req.getParameter("questionId"));
+        long questionId = Long.parseLong(request.getParameter("questionId"));
 
         Question question = questionDao.findById(questionId);
 
-        if (!question.isSameUserName(UserSessionUtils.getUserFromSession(req.getSession()))) {
+        if (!question.isSameUserName(UserSessionUtils.getUserFromSession(request.getSession()))) {
             throw new IllegalStateException("다른 사용자가 쓴 글을 수정할 수 없습니다.");
         }
 
-        Question newQuestion = new Question(question.getWriter(), req.getParameter("title"), req.getParameter("contents"));
+        Question newQuestion = new Question(question.getWriter(), request.getParameter("title"), request.getParameter("contents"));
 
         question.update(newQuestion);
         questionDao.update(question);

@@ -14,16 +14,16 @@ public class DeleteQuestionController extends AbstractController {
     private QnaService qnaService = QnaService.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (!UserSessionUtils.isLogined(req.getSession())) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");
         }
 
-        long questionId = Long.parseLong(req.getParameter("questionId"));
+        long questionId = Long.parseLong(request.getParameter("questionId"));
 
         try {
-            qnaService.deleteQuestion(questionId, UserSessionUtils.getUserFromSession(req.getSession()));
+            qnaService.deleteQuestion(questionId, UserSessionUtils.getUserFromSession(request.getSession()));
             return jspView("redirect:/");
 
         } catch (CannotDeleteException e) {

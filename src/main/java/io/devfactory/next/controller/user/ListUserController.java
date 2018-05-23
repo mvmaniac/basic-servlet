@@ -13,9 +13,9 @@ public class ListUserController extends AbstractController {
     private UserDao userDao = UserDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (!UserSessionUtils.isLogined(req.getSession())) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");
         }
 

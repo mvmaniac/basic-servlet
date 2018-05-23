@@ -13,9 +13,9 @@ public class DeleteAnswerController extends AbstractController {
     private AnswerDao answerDao = AnswerDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        Long answerId = Long.parseLong(req.getParameter("answerId"));
+        Long answerId = Long.parseLong(request.getParameter("answerId"));
 
         answerDao.delete(answerId);
         return jsonView().addObject("result", Result.ok());

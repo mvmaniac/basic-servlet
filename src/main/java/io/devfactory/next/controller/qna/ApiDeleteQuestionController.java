@@ -15,16 +15,16 @@ public class ApiDeleteQuestionController extends AbstractController {
     private QnaService qnaService = QnaService.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (!UserSessionUtils.isLogined(req.getSession())) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jsonView().addObject("result", Result.fail("Login is required"));
         }
 
-        long questionId = Long.parseLong(req.getParameter("questionId"));
+        long questionId = Long.parseLong(request.getParameter("questionId"));
 
         try {
-            qnaService.deleteQuestion(questionId, UserSessionUtils.getUserFromSession(req.getSession()));
+            qnaService.deleteQuestion(questionId, UserSessionUtils.getUserFromSession(request.getSession()));
             return jsonView().addObject("result", Result.ok());
 
         } catch (CannotDeleteException e) {

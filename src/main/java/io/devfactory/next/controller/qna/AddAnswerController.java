@@ -21,15 +21,15 @@ public class AddAnswerController extends AbstractController {
     private AnswerDao answerDao = AnswerDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (!UserSessionUtils.isLogined(req.getSession())) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jsonView().addObject("result", Result.fail("Login is required"));
         }
 
-        User user = UserSessionUtils.getUserFromSession(req.getSession());
+        User user = UserSessionUtils.getUserFromSession(request.getSession());
 
-        Answer answer = new Answer(user.getName(), req.getParameter("contents"), Long.parseLong(req.getParameter("questionId")));
+        Answer answer = new Answer(user.getName(), request.getParameter("contents"), Long.parseLong(request.getParameter("questionId")));
 
         logger.debug("answer : {}", answer);
 
