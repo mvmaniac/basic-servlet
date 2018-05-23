@@ -1,10 +1,7 @@
 package io.devfactory.core.nmvc;
 
 import com.google.common.collect.Lists;
-import io.devfactory.core.mvc.Controller;
-import io.devfactory.core.mvc.LegacyHandlerMapping;
-import io.devfactory.core.mvc.ModelAndView;
-import io.devfactory.core.mvc.View;
+import io.devfactory.core.mvc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +18,7 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private List<HandlerMapping> mappings = Lists.newArrayList();
+    private List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
 
     @Override
     public void init() {
@@ -33,6 +31,9 @@ public class DispatcherServlet extends HttpServlet {
 
         mappings.add(lhm);
         mappings.add(ahm);
+
+        handlerAdapters.add(new ControllerHandlerAdapter());
+        handlerAdapters.add(new HandlerExecutionHandlerAdapter());
     }
 
     @Override
@@ -70,10 +71,12 @@ public class DispatcherServlet extends HttpServlet {
 
     private ModelAndView execute(Object handler, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (handler instanceof Controller) {
-            return ((Controller)handler).execute(request, response);
-        } else {
-            return ((HandlerExecution)handler).handle(request, response);
+        for (HandlerAdapter handlerAdapter : handlerAdapters) {
+            if (handlerAdapter.supports(handler)) {
+                return handlerAdapter.handle(request, response, handler);
+            }
         }
+
+        return null;
     }
 }
