@@ -47,6 +47,8 @@ public class AnnotationHandlerMapping implements HandlerMapping {
         String requestUri = request.getRequestURI();
         RequestMethod rm = RequestMethod.valueOf(request.getMethod().toUpperCase());
 
+        logger.debug("requestUri : {}, requestMethod : {}", requestUri, rm);
+
         return handlerExecutions.get(new HandlerKey(requestUri, rm));
     }
 

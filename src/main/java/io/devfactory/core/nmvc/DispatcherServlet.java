@@ -1,9 +1,10 @@
-package io.devfactory.core.mvc;
+package io.devfactory.core.nmvc;
 
 import com.google.common.collect.Lists;
-import io.devfactory.core.nmvc.AnnotationHandlerMapping;
-import io.devfactory.core.nmvc.HandlerExecution;
-import io.devfactory.core.nmvc.HandlerMapping;
+import io.devfactory.core.mvc.Controller;
+import io.devfactory.core.mvc.LegacyHandlerMapping;
+import io.devfactory.core.mvc.ModelAndView;
+import io.devfactory.core.mvc.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class DispatcherServlet extends HttpServlet {
         LegacyHandlerMapping lhm = new LegacyHandlerMapping();
         lhm.initMapping();
 
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping();
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("io.devfactory.next.controller");
         ahm.initialize();
 
         mappings.add(lhm);
@@ -50,7 +51,7 @@ public class DispatcherServlet extends HttpServlet {
             view.render(mav.getModel(), request, response);
 
         } catch (Throwable e) {
-            logger.error("Exception : {}", e);
+            logger.error("Exception : ", e);
             throw new ServletException(e.getMessage());
         }
     }
