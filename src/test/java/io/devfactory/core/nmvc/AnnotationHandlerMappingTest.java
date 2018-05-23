@@ -16,7 +16,7 @@ public class AnnotationHandlerMappingTest {
     @Before
     public void setup() {
 
-        handlerMapping = new AnnotationHandlerMapping("core.nmvc");
+        handlerMapping = new AnnotationHandlerMapping("io.devfactory.core.nmvc");
         handlerMapping.initialize();
 
         response = new MockHttpServletResponse();
