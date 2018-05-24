@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteAnswerController extends AbstractController {
 
-    private AnswerDao answerDao = AnswerDao.getInstance();
+    private AnswerDao answerDao;
+
+    public DeleteAnswerController(AnswerDao questionDao) {
+        this.answerDao = answerDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

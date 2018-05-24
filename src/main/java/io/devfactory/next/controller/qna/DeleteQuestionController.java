@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteQuestionController extends AbstractController {
 
-    private QnaService qnaService = QnaService.getInstance();
+    private QnaService qnaService;
+
+    public DeleteQuestionController(QnaService qnaService) {
+        this.qnaService = qnaService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -11,7 +11,9 @@ import java.util.List;
 
 public class JdbcQuestionDao implements QuestionDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
+    public JdbcQuestionDao() { }
 
     public JdbcQuestionDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

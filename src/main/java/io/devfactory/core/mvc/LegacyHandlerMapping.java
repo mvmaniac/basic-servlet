@@ -26,16 +26,16 @@ public class LegacyHandlerMapping implements HandlerMapping {
         AnswerDao answerDao = new JdbcAnswerDao();
         QnaService qnaService = new QnaService(questionDao, answerDao);
 
-        mappings.put("/qna/show", new ShowQuestionController());
+        mappings.put("/qna/show", new ShowQuestionController(questionDao, answerDao));
         mappings.put("/qna/form", new CreateFormQuestionController());
-        mappings.put("/qna/create", new CreateQuestionController());
-        mappings.put("/qna/updateForm", new UpdateFormQuestionController());
-        mappings.put("/qna/update", new UpdateQuestionController());
-        mappings.put("/qna/delete", new DeleteQuestionController());
-        mappings.put("/api/qna/deleteQuestion", new ApiDeleteQuestionController());
-        mappings.put("/api/qna/list", new ApiListQuestionController());
-        mappings.put("/api/qna/addAnswer", new AddAnswerController());
-        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
+        mappings.put("/qna/create", new CreateQuestionController(questionDao));
+        mappings.put("/qna/updateForm", new UpdateFormQuestionController(questionDao));
+        mappings.put("/qna/update", new UpdateQuestionController(questionDao));
+        mappings.put("/qna/delete", new DeleteQuestionController(qnaService));
+        mappings.put("/api/qna/deleteQuestion", new ApiDeleteQuestionController(qnaService));
+        mappings.put("/api/qna/list", new ApiListQuestionController(questionDao));
+        mappings.put("/api/qna/addAnswer", new AddAnswerController(questionDao, answerDao));
+        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController(answerDao));
 
         logger.info("Initialized Request Mapping!");
     }

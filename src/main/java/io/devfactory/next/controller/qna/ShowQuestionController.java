@@ -13,8 +13,13 @@ import java.util.List;
 
 public class ShowQuestionController extends AbstractController {
 
-    private QuestionDao questionDao = QuestionDao.getInstance();
-    private AnswerDao answerDao = AnswerDao.getInstance();
+    private QuestionDao questionDao;
+    private AnswerDao answerDao;
+
+    public ShowQuestionController(QuestionDao questionDao, AnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -3,6 +3,8 @@ package io.devfactory.next.controller.qna;
 import io.devfactory.core.mvc.*;
 import io.devfactory.next.controller.UserSessionUtils;
 import io.devfactory.next.dao.AnswerDao;
+import io.devfactory.next.dao.JdbcAnswerDao;
+import io.devfactory.next.dao.JdbcQuestionDao;
 import io.devfactory.next.dao.QuestionDao;
 import io.devfactory.next.model.Answer;
 import io.devfactory.next.model.Result;
@@ -17,8 +19,13 @@ public class AddAnswerController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(AddAnswerController.class);
 
-    private QuestionDao questionDao = QuestionDao.getInstance();
-    private AnswerDao answerDao = AnswerDao.getInstance();
+    private QuestionDao questionDao;
+    private AnswerDao answerDao;
+
+    public AddAnswerController(QuestionDao questionDao, AnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

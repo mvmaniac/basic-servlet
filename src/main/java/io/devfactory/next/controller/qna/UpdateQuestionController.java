@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class UpdateQuestionController extends AbstractController {
 
-    private QuestionDao questionDao = QuestionDao.getInstance();
+    private QuestionDao questionDao;
+
+    public UpdateQuestionController(QuestionDao questionDao) {
+        this.questionDao = questionDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
