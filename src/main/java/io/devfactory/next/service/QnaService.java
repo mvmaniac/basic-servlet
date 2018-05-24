@@ -1,8 +1,8 @@
 package io.devfactory.next.service;
 
 import io.devfactory.next.CannotDeleteException;
-import io.devfactory.next.dao.JdbcAnswerDao;
-import io.devfactory.next.dao.JdbcQuestionDao;
+import io.devfactory.next.dao.AnswerDao;
+import io.devfactory.next.dao.QuestionDao;
 import io.devfactory.next.model.Answer;
 import io.devfactory.next.model.Question;
 import io.devfactory.next.model.User;
@@ -11,10 +11,10 @@ import java.util.List;
 
 public class QnaService {
 
-    private JdbcQuestionDao questionDao;
-    private JdbcAnswerDao answerDao;
+    private QuestionDao questionDao;
+    private AnswerDao answerDao;
 
-    public QnaService(JdbcQuestionDao questionDao, JdbcAnswerDao answerDao) {
+    public QnaService(QuestionDao questionDao, AnswerDao answerDao) {
         this.questionDao = questionDao;
         this.answerDao = answerDao;
     }
@@ -35,31 +35,10 @@ public class QnaService {
             throw new CannotDeleteException("존재하지 않는 질문입니다.");
         }
 
-        if (!question.isSameUserName(user)) {
-            throw new CannotDeleteException("다른 사용자가 쓴 글을 삭제할 수 없습니다.");
-        }
-
         List<Answer> answers = answerDao.findAllByQuestionId(questionId);
 
-        if (answers.isEmpty()) {
+        if (question.canDelete(user, answers)) {
             questionDao.delete(questionId);
-            return;
         }
-
-        String writer = question.getWriter();
-        boolean canDelete = true;
-
-        for (Answer answer : answers) {
-            if (!writer.equals(answer.getWriter())) {
-                canDelete = false;
-                break;
-            }
-        }
-
-        if (!canDelete) {
-            throw new CannotDeleteException("다른 사용자가 추가한 댓글이 존재해 삭제할 수 없습니다.");
-        }
-
-        questionDao.delete(questionId);
     }
 }

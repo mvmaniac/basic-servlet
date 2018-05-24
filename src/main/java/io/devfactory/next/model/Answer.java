@@ -47,6 +47,10 @@ public class Answer {
         return questionId;
     }
 
+    public boolean canDelete(User user) {
+        return user.isSameUserName(this.writer);
+    }
+
     @Override
     public int hashCode() {
 
