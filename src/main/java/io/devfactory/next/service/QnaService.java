@@ -1,8 +1,8 @@
 package io.devfactory.next.service;
 
 import io.devfactory.next.CannotDeleteException;
-import io.devfactory.next.dao.AnswerDao;
-import io.devfactory.next.dao.QuestionDao;
+import io.devfactory.next.dao.JdbcAnswerDao;
+import io.devfactory.next.dao.JdbcQuestionDao;
 import io.devfactory.next.model.Answer;
 import io.devfactory.next.model.Question;
 import io.devfactory.next.model.User;
@@ -11,15 +11,12 @@ import java.util.List;
 
 public class QnaService {
 
-    private static QnaService qnaService = new QnaService();
+    private JdbcQuestionDao questionDao;
+    private JdbcAnswerDao answerDao;
 
-    private QuestionDao questionDao = QuestionDao.getInstance();
-    private AnswerDao answerDao = AnswerDao.getInstance();
-
-    private QnaService() {}
-
-    public static QnaService getInstance() {
-        return qnaService;
+    public QnaService(JdbcQuestionDao questionDao, JdbcAnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
     }
 
     public Question findById(long questionId) {
