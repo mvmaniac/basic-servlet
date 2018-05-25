@@ -1,5 +1,6 @@
 package io.devfactory.next.dao;
 
+import io.devfactory.core.annotation.Repository;
 import io.devfactory.core.jdbc.JdbcTemplate;
 import io.devfactory.core.jdbc.RowMapper;
 import io.devfactory.next.model.User;
@@ -8,17 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class UserDao {
 
-    private static UserDao userDao = new UserDao();
-
     private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-
-    private UserDao() {}
-
-    public static UserDao getInstance() {
-        return userDao;
-    }
 
     public void insert(User user) {
 

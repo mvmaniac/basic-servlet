@@ -1,6 +1,7 @@
 package io.devfactory.next.controller.user;
 
 import io.devfactory.core.annotation.Controller;
+import io.devfactory.core.annotation.Inject;
 import io.devfactory.core.annotation.RequestMapping;
 import io.devfactory.core.annotation.RequestMethod;
 import io.devfactory.core.mvc.ModelAndView;
@@ -20,7 +21,12 @@ public class UserController extends AbstractNewController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private UserDao userDao = UserDao.getInstance();
+    private UserDao userDao;
+
+    @Inject
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @RequestMapping("/users")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {

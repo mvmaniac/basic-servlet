@@ -27,10 +27,10 @@ public class JdbcTemplate {
              PreparedStatement pstmt = con.prepareStatement(sql)) {
 
             pss.setValues(pstmt);
-            int cont = pstmt.executeUpdate();
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
-          throw new DataAccessException(e);
+            throw new DataAccessException(e);
         }
     }
 

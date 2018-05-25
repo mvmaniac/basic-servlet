@@ -1,10 +1,11 @@
 package io.devfactory.next.controller;
 
 import io.devfactory.core.annotation.Controller;
+import io.devfactory.core.annotation.Inject;
 import io.devfactory.core.annotation.RequestMapping;
 import io.devfactory.core.mvc.ModelAndView;
 import io.devfactory.core.nmvc.AbstractNewController;
-import io.devfactory.next.dao.JdbcQuestionDao;
+import io.devfactory.next.dao.QuestionDao;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class HomeController extends AbstractNewController {
 
-    private JdbcQuestionDao questionDao;
+    private QuestionDao questionDao;
 
-    public HomeController(JdbcQuestionDao questionDao) {
+    @Inject
+    public HomeController(QuestionDao questionDao) {
         this.questionDao = questionDao;
     }
 
