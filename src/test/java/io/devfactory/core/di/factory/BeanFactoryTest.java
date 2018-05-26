@@ -10,9 +10,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.Set;
-
 import static org.junit.Assert.assertNotNull;
 
 public class BeanFactoryTest {
@@ -22,14 +19,13 @@ public class BeanFactoryTest {
     private BeanFactory beanFactory;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setup() {
 
-        BeanScanner scanner = new BeanScanner("io.devfactory.core.di.factory.example");
+        beanFactory = new BeanFactory();
 
-        Set<Class<?>> preInstanticateClazz = scanner.scan();
+        ClasspathBeanDefinitionScanner scanner = new ClasspathBeanDefinitionScanner(beanFactory);
+        scanner.doScan("core.di.factory.example");
 
-        beanFactory = new BeanFactory(preInstanticateClazz);
         beanFactory.initialize();
     }
 
@@ -63,17 +59,6 @@ public class BeanFactoryTest {
 
         assertNotNull(userController);
         assertNotNull(userController.getUserService());
-    }
-
-    @Test
-    public void getControllers() throws Exception {
-
-        Map<Class<?>, Object> controllers = beanFactory.getControllers();
-        Set<Class<?>> keys = controllers.keySet();
-
-        for (Class<?> clazz : keys) {
-            logger.debug("Bean : {}", clazz);
-        }
     }
 
     @After
