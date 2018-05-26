@@ -3,10 +3,10 @@ package io.devfactory.core.di.factory;
 import com.google.common.collect.Sets;
 import io.devfactory.core.annotation.Inject;
 import org.reflections.ReflectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.Set;
 
 import static org.reflections.ReflectionUtils.*;
@@ -14,6 +14,8 @@ import static org.reflections.ReflectionUtils.getAllConstructors;
 import static org.reflections.ReflectionUtils.withAnnotation;
 
 public class BeanFactoryUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(BeanFactoryUtils.class);
 
     @SuppressWarnings({ "unchecked" })
     public static Set<Method> getInjectedMethods(Class<?> clazz) {
@@ -28,6 +30,36 @@ public class BeanFactoryUtils {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Set<Constructor> getInjectedConstructors(Class<?> clazz) {
         return getAllConstructors(clazz, withAnnotation(Inject.class));
+    }
+
+    public static <T> T instantiate(Class<T> clazz) {
+
+        if (clazz.isInterface()) {
+            throw new IllegalStateException(clazz +"는 클래스가 아니다.");
+
+        } else {
+            try {
+                return clazz.newInstance();
+
+            } catch (InstantiationException | IllegalAccessException e) {
+                logger.error("{} class newInstance error : ", clazz, e);
+                return null;
+            }
+        }
+    }
+
+    public static <T> T instantiateClass(Constructor<T> ctor, Object... args) {
+
+        if ((!Modifier.isPublic(ctor.getModifiers()) || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {
+            ctor.setAccessible(true);
+        }
+
+        try {
+            return ctor.newInstance(args);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            logger.error("{} constructor newInstance error : ", ctor, e);
+            return null;
+        }
     }
 
     /**

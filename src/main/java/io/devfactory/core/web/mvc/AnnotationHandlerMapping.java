@@ -3,15 +3,16 @@ package io.devfactory.core.web.mvc;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import io.devfactory.core.annotation.Controller;
 import io.devfactory.core.annotation.RequestMapping;
 import io.devfactory.core.annotation.RequestMethod;
-import io.devfactory.core.di.factory.BeanFactory;
-import io.devfactory.core.di.factory.BeanScanner;
+import io.devfactory.core.di.factory.ApplicationContext;
 import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
@@ -20,21 +21,17 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
     private static final Logger logger = LoggerFactory.getLogger(AnnotationHandlerMapping.class);
 
-    private Object[] basePackage;
+    private Object[] basePackages;
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
 
     public AnnotationHandlerMapping(Object... basePackage) {
-        this.basePackage = basePackage;
+        this.basePackages = basePackage;
     }
 
     public void initialize() {
 
-        BeanScanner scanner = new BeanScanner(basePackage);
-
-        BeanFactory beanFactory = new BeanFactory(scanner.scan());
-        beanFactory.initialize();
-
-        Map<Class<?>, Object> controllers = beanFactory.getControllers();
+        ApplicationContext ac = new ApplicationContext(basePackages);
+        Map<Class<?>, Object> controllers = getControllers(ac);
 
         Set<Method> methods = getRequestMappingMethods(controllers.keySet());
 
@@ -56,6 +53,22 @@ public class AnnotationHandlerMapping implements HandlerMapping {
         logger.debug("requestUri : {}, requestMethod : {}", requestUri, rm);
 
         return handlerExecutions.get(new HandlerKey(requestUri, rm));
+    }
+
+    private Map<Class<?>, Object> getControllers(ApplicationContext ac) {
+
+        Map<Class<?>, Object> controllers = Maps.newHashMap();
+
+        for (Class<?> clazz : ac.getBeanClasses()) {
+
+            Annotation annotation = clazz.getAnnotation(Controller.class);
+
+            if (annotation != null) {
+                controllers.put(clazz, ac.getBean(clazz));
+            }
+        }
+
+        return controllers;
     }
 
     @SuppressWarnings("unchecked")
