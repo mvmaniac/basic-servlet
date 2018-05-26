@@ -1,5 +1,7 @@
 package io.devfactory.core.jdbc;
 
+import io.devfactory.core.annotation.Component;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,15 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JdbcTemplate {
-
-    private static JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
-    private JdbcTemplate() {}
-
-    public static JdbcTemplate getInstance() {
-        return jdbcTemplate;
-    }
 
     public void update(String sql, Object... parameters) {
         update(sql, createPreparedStatementSetter(parameters));

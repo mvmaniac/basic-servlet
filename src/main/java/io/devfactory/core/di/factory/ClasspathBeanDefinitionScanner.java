@@ -1,6 +1,7 @@
 package io.devfactory.core.di.factory;
 
 import com.google.common.collect.Sets;
+import io.devfactory.core.annotation.Component;
 import io.devfactory.core.annotation.Controller;
 import io.devfactory.core.annotation.Repository;
 import io.devfactory.core.annotation.Service;
@@ -21,7 +22,7 @@ public class ClasspathBeanDefinitionScanner {
     public void doScan(Object... basePackages) {
 
         Reflections reflections = new Reflections(basePackages);
-        Set<Class<?>> beanClasses = getTypesAnnotatedWith(reflections, Controller.class, Service.class, Repository.class);
+        Set<Class<?>> beanClasses = getTypesAnnotatedWith(reflections, Controller.class, Service.class, Repository.class, Component.class);
 
         for (Class<?> clazz : beanClasses) {
             beanDefinitionRegistry.registerBeanDefinition(clazz, new BeanDefinition(clazz));

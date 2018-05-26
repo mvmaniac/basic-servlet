@@ -1,5 +1,6 @@
 package io.devfactory.next.dao;
 
+import io.devfactory.core.annotation.Inject;
 import io.devfactory.core.annotation.Repository;
 import io.devfactory.core.jdbc.JdbcTemplate;
 import io.devfactory.core.jdbc.KeyHolder;
@@ -13,7 +14,12 @@ import java.util.List;
 @Repository
 public class JdbcAnswerDao implements AnswerDao {
 
-    private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    public JdbcAnswerDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public Answer insert(Answer answer) {
 

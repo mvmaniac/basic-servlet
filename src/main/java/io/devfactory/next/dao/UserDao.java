@@ -1,5 +1,6 @@
 package io.devfactory.next.dao;
 
+import io.devfactory.core.annotation.Inject;
 import io.devfactory.core.annotation.Repository;
 import io.devfactory.core.jdbc.JdbcTemplate;
 import io.devfactory.core.jdbc.RowMapper;
@@ -12,7 +13,12 @@ import java.util.List;
 @Repository
 public class UserDao {
 
-    private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    public UserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void insert(User user) {
 

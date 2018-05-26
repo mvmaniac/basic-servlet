@@ -17,7 +17,7 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("io.devfactory.next");
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("io.devfactory.core","io.devfactory.next");
         ahm.initialize();
 
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(ahm));
