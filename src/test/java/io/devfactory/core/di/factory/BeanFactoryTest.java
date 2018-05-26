@@ -1,39 +1,40 @@
 package io.devfactory.core.di.factory;
 
-import com.google.common.collect.Sets;
-import io.devfactory.core.annotation.Controller;
-import io.devfactory.core.annotation.Repository;
-import io.devfactory.core.annotation.Service;
 import io.devfactory.core.di.factory.example.MyQnaService;
+import io.devfactory.core.di.factory.example.MyUserController;
+import io.devfactory.core.di.factory.example.MyUserService;
 import io.devfactory.core.di.factory.example.QnaController;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.annotation.Annotation;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 
 public class BeanFactoryTest {
 
-    private Reflections reflections;
+    private Logger logger = LoggerFactory.getLogger(BeanFactoryTest.class);
+
     private BeanFactory beanFactory;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setup() {
 
-        reflections = new Reflections("io.devfactory.core.di.factory.example");
+        BeanScanner scanner = new BeanScanner("io.devfactory.core.di.factory.example");
 
-        Set<Class<?>> preInstanticateClazz = getTypesAnnotatedWith(Controller.class, Service.class, Repository.class);
+        Set<Class<?>> preInstanticateClazz = scanner.scan();
 
         beanFactory = new BeanFactory(preInstanticateClazz);
         beanFactory.initialize();
     }
 
     @Test
-    public void di() throws Exception {
+    public void constructorDI() throws Exception {
 
         QnaController qnaController = beanFactory.getBean(QnaController.class);
 
@@ -41,19 +42,42 @@ public class BeanFactoryTest {
         assertNotNull(qnaController.getQnaService());
 
         MyQnaService qnaService = qnaController.getQnaService();
+
         assertNotNull(qnaService.getUserRepository());
         assertNotNull(qnaService.getQuestionRepository());
     }
 
-    @SuppressWarnings("unchecked")
-    private Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation>... annotations) {
+    @Test
+    public void fieldDI() throws Exception {
 
-        Set<Class<?>> beans = Sets.newHashSet();
+        MyUserService userService = beanFactory.getBean(MyUserService.class);
 
-        for (Class<? extends Annotation> annotation : annotations) {
-            beans.addAll(reflections.getTypesAnnotatedWith(annotation));
+        assertNotNull(userService);
+        assertNotNull(userService.getUserRepository());
+    }
+
+    @Test
+    public void setterDI() throws Exception {
+
+        MyUserController userController = beanFactory.getBean(MyUserController.class);
+
+        assertNotNull(userController);
+        assertNotNull(userController.getUserService());
+    }
+
+    @Test
+    public void getControllers() throws Exception {
+
+        Map<Class<?>, Object> controllers = beanFactory.getControllers();
+        Set<Class<?>> keys = controllers.keySet();
+
+        for (Class<?> clazz : keys) {
+            logger.debug("Bean : {}", clazz);
         }
+    }
 
-        return beans;
+    @After
+    public void tearDown() {
+        beanFactory.clear();
     }
 }
