@@ -21,17 +21,16 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
     private static final Logger logger = LoggerFactory.getLogger(AnnotationHandlerMapping.class);
 
-    private Object[] basePackages;
+    private ApplicationContext applicationContext;
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
 
-    public AnnotationHandlerMapping(Object... basePackage) {
-        this.basePackages = basePackage;
+    public AnnotationHandlerMapping(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     public void initialize() {
 
-        ApplicationContext ac = new ApplicationContext(basePackages);
-        Map<Class<?>, Object> controllers = getControllers(ac);
+        Map<Class<?>, Object> controllers = getControllers(applicationContext);
 
         Set<Method> methods = getRequestMappingMethods(controllers.keySet());
 
@@ -45,6 +44,7 @@ public class AnnotationHandlerMapping implements HandlerMapping {
         }
     }
 
+    @Override
     public HandlerExecution getHandler(HttpServletRequest request) {
 
         String requestUri = request.getRequestURI();

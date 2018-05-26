@@ -1,5 +1,7 @@
 package io.devfactory.next.config;
 
+import io.devfactory.core.di.factory.AnnotationConfigApplicationContext;
+import io.devfactory.core.di.factory.ApplicationContext;
 import io.devfactory.core.web.WebApplicationInitializer;
 import io.devfactory.core.web.mvc.AnnotationHandlerMapping;
 import io.devfactory.core.web.mvc.DispatcherServlet;
@@ -17,7 +19,9 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("io.devfactory.core","io.devfactory.next");
+        ApplicationContext ac = new AnnotationConfigApplicationContext(MyConfiguration.class);
+
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping(ac);
         ahm.initialize();
 
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(ahm));

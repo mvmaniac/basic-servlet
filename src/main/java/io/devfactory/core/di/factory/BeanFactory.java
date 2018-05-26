@@ -2,17 +2,16 @@ package io.devfactory.core.di.factory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.devfactory.core.annotation.Controller;
+import io.devfactory.core.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class BeanFactory implements BeanDefinitionRegistry {
@@ -52,27 +51,76 @@ public class BeanFactory implements BeanDefinitionRegistry {
             return (T) bean;
         }
 
-        Class<?> concreteClass = findConcreteClass(clazz);
+        BeanDefinition beanDefinition = beanDefinitions.get(clazz);
 
-        BeanDefinition beanDefinition = beanDefinitions.get(concreteClass);
+        if (beanDefinition instanceof AnnotatedBeanDefinition) {
+
+            Optional<Object> optionalBean = createAnnotatedBean(beanDefinition);
+            optionalBean.ifPresent(b -> beans.put(clazz, b));
+
+            initialize(bean, clazz);
+
+            return (T) optionalBean.orElse(null);
+        }
+
+        Optional<Class<?>> concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, getBeanClasses());
+
+        if (!concreteClazz.isPresent()) {
+            return null;
+        }
+
+        beanDefinition = beanDefinitions.get(concreteClazz.get());
 
         bean = inject(beanDefinition);
-        beans.put(concreteClass, bean);
+        beans.put(concreteClazz.get(), bean);
+
+        initialize(bean, concreteClazz.get());
 
         return (T) bean;
     }
 
-    private Class<?> findConcreteClass(Class<?> clazz) {
+    private void initialize(Object bean, Class<?> beanClass) {
 
-        Set<Class<?>> beanClasses = getBeanClasses();
+        Set<Method> initializeMethods = BeanFactoryUtils.getBeanMethods(beanClass, PostConstruct.class);
 
-        Class<?> concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, beanClasses);
-
-        if (!beanClasses.contains(concreteClazz)) {
-            throw new IllegalStateException(clazz + "는 Bean이 아니다.");
+        if (initializeMethods.isEmpty()) {
+            return;
         }
 
-        return concreteClazz;
+        for (Method initializeMethod : initializeMethods) {
+
+            logger.debug("@PostConstruct Initialize Method : {}", initializeMethod);
+
+            BeanFactoryUtils.invokeMethod(initializeMethod, bean, populateArguments(initializeMethod.getParameterTypes()));
+        }
+    }
+
+    private Optional<Object> createAnnotatedBean(BeanDefinition beanDefinition) {
+
+        AnnotatedBeanDefinition abd = (AnnotatedBeanDefinition) beanDefinition;
+        Method method = abd.getMethod();
+
+        Object[] args = populateArguments(method.getParameterTypes());
+
+        return BeanFactoryUtils.invokeMethod(method, getBean(method.getDeclaringClass()), args);
+    }
+
+    private Object[] populateArguments(Class<?>[] paramTypes) {
+
+        List<Object> args = Lists.newArrayList();
+
+        for (Class<?> param : paramTypes) {
+
+            Object bean = getBean(param);
+
+            if (bean == null) {
+                throw new NullPointerException(param + "에 해당하는 Bean이 존재하지 않습니다.");
+            }
+
+            args.add(getBean(param));
+        }
+
+        return args.toArray();
     }
 
     private Object inject(BeanDefinition beanDefinition) {

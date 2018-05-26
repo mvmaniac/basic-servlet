@@ -6,7 +6,9 @@ import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.reflections.ReflectionUtils.*;
@@ -23,6 +25,11 @@ public class BeanFactoryUtils {
     }
 
     @SuppressWarnings({ "unchecked" })
+    public static Set<Method> getBeanMethods(Class<?> clazz, Class<? extends Annotation> annotation) {
+        return getAllMethods(clazz, withAnnotation(annotation));
+    }
+
+    @SuppressWarnings({ "unchecked" })
     public static Set<Field> getInjectedFields(Class<?> clazz) {
         return getAllFields(clazz, withAnnotation(Inject.class));
     }
@@ -30,6 +37,15 @@ public class BeanFactoryUtils {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Set<Constructor> getInjectedConstructors(Class<?> clazz) {
         return getAllConstructors(clazz, withAnnotation(Inject.class));
+    }
+
+    public static Optional<Object> invokeMethod(Method method, Object bean, Object[] args) {
+        try {
+            return Optional.ofNullable(method.invoke(bean, args));
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            logger.error(e.getMessage());
+            return Optional.empty();
+        }
     }
 
     public static <T> T instantiate(Class<T> clazz) {
@@ -89,10 +105,10 @@ public class BeanFactoryUtils {
      * @param preInstanticateBeans
      * @return
      */
-    public static Class<?> findConcreteClass(Class<?> injectedClazz, Set<Class<?>> preInstanticateBeans) {
+    public static Optional<Class<?>> findConcreteClass(Class<?> injectedClazz, Set<Class<?>> preInstanticateBeans) {
 
         if (!injectedClazz.isInterface()) {
-            return injectedClazz;
+            return Optional.of(injectedClazz);
         }
 
         for (Class<?> clazz : preInstanticateBeans) {
@@ -100,10 +116,10 @@ public class BeanFactoryUtils {
             Set<Class<?>> interfaces = Sets.newHashSet(clazz.getInterfaces());
 
             if (interfaces.contains(injectedClazz)) {
-                return clazz;
+                return Optional.of(clazz);
             }
         }
 
-        throw new IllegalStateException(injectedClazz + "인터페이스를 구현하는 Bean이 존재하지 않는다.");
+        return Optional.empty();
     }
 }

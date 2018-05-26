@@ -1,19 +1,24 @@
-package io.devfactory.core.jdbc;
+package io.devfactory.next.config;
 
+import io.devfactory.core.annotation.Bean;
+import io.devfactory.core.annotation.ComponentScan;
+import io.devfactory.core.annotation.Configuration;
+import io.devfactory.core.jdbc.JdbcTemplate;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 
-public class ConnectionManager {
+@Configuration
+@ComponentScan({ "io.devfactory.next", "io.devfactory.core" })
+public class MyConfiguration {
 
     private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/basic_servlet?useSSL=false";
     private static final String DB_USERNAME = "basic";
     private static final String DB_PW = "basic";
 
-    public static DataSource getDataSource() {
+    @Bean
+    public DataSource dataSource() {
 
         BasicDataSource ds = new BasicDataSource();
 
@@ -25,11 +30,8 @@ public class ConnectionManager {
         return ds;
     }
 
-    public static Connection getConnection() {
-        try {
-            return getDataSource().getConnection();
-        } catch (SQLException e) {
-            throw new IllegalStateException(e);
-        }
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }

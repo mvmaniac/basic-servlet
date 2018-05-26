@@ -2,6 +2,7 @@ package io.devfactory.core.jdbc;
 
 import io.devfactory.core.annotation.Component;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,13 +13,19 @@ import java.util.List;
 @Component
 public class JdbcTemplate {
 
+    private DataSource dataSource;
+
+    public JdbcTemplate(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public void update(String sql, Object... parameters) {
         update(sql, createPreparedStatementSetter(parameters));
     }
 
     public void update(String sql, PreparedStatementSetter pss) {
 
-        try (Connection con = ConnectionManager.getConnection();
+        try (Connection con = dataSource.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
 
             pss.setValues(pstmt);
@@ -31,7 +38,7 @@ public class JdbcTemplate {
 
     public void update(PreparedStatementCreator psc, KeyHolder holder) {
 
-        try (Connection conn = ConnectionManager.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             PreparedStatement ps = psc.createPreparedStatement(conn);
 
             ps.executeUpdate();
@@ -57,7 +64,7 @@ public class JdbcTemplate {
 
         ResultSet rs = null;
 
-        try (Connection con = ConnectionManager.getConnection();
+        try (Connection con = dataSource.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
 
             pss.setValues(pstmt);
