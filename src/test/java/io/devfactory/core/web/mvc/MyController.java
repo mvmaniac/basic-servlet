@@ -1,10 +1,10 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
 import io.devfactory.core.annotation.Controller;
 import io.devfactory.core.annotation.RequestMapping;
 import io.devfactory.core.annotation.RequestMethod;
-import io.devfactory.core.mvc.JspView;
-import io.devfactory.core.mvc.ModelAndView;
+import io.devfactory.core.web.view.JspView;
+import io.devfactory.core.web.view.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

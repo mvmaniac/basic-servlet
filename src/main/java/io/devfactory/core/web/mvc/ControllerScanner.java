@@ -1,4 +1,4 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
 import com.google.common.collect.Maps;
 import io.devfactory.core.annotation.Controller;

@@ -1,7 +1,10 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
 import com.google.common.collect.Lists;
-import io.devfactory.core.mvc.*;
+import io.devfactory.core.web.oldmvc.ControllerHandlerAdapter;
+import io.devfactory.core.web.oldmvc.LegacyHandlerMapping;
+import io.devfactory.core.web.view.ModelAndView;
+import io.devfactory.core.web.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +29,7 @@ public class DispatcherServlet extends HttpServlet {
         LegacyHandlerMapping lhm = new LegacyHandlerMapping();
         lhm.initMapping();
 
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("io.devfactory.next.controller");
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("io.devfactory.next");
         ahm.initialize();
 
         mappings.add(lhm);

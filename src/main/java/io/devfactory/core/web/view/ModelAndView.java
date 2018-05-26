@@ -1,4 +1,4 @@
-package io.devfactory.core.mvc;
+package io.devfactory.core.web.view;
 
 import java.util.Collections;
 import java.util.HashMap;

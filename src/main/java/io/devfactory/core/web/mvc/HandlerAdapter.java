@@ -1,6 +1,6 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
-import io.devfactory.core.mvc.ModelAndView;
+import io.devfactory.core.web.view.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

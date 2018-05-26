@@ -1,4 +1,4 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
 import io.devfactory.core.annotation.RequestMethod;
 

@@ -1,4 +1,4 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class ControllerScannerTest {
 
     @Before
     public void setup() {
-        cf = new ControllerScanner("io.devfactory.core.nmvc");
+        cf = new ControllerScanner("io.devfactory.core.web.nmvc");
     }
 
     @Test

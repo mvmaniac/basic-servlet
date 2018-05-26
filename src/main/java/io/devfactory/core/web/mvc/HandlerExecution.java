@@ -1,12 +1,11 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
-import io.devfactory.core.mvc.ModelAndView;
+import io.devfactory.core.web.view.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

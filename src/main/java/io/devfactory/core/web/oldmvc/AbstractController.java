@@ -1,4 +1,8 @@
-package io.devfactory.core.mvc;
+package io.devfactory.core.web.oldmvc;
+
+import io.devfactory.core.web.view.JsonView;
+import io.devfactory.core.web.view.JspView;
+import io.devfactory.core.web.view.ModelAndView;
 
 public abstract class AbstractController implements Controller {
 

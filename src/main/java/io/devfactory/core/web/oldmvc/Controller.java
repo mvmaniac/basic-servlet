@@ -1,4 +1,6 @@
-package io.devfactory.core.mvc;
+package io.devfactory.core.web.oldmvc;
+
+import io.devfactory.core.web.view.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

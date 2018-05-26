@@ -1,4 +1,5 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
+
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

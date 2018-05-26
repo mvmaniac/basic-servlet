@@ -1,7 +1,7 @@
-package io.devfactory.core.mvc;
+package io.devfactory.core.web.oldmvc;
 
-import io.devfactory.core.nmvc.DispatcherServlet;
-import io.devfactory.core.nmvc.HandlerMapping;
+import io.devfactory.core.web.mvc.DispatcherServlet;
+import io.devfactory.core.web.mvc.HandlerMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

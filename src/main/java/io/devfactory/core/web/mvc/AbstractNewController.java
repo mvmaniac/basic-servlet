@@ -1,8 +1,8 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
-import io.devfactory.core.mvc.JsonView;
-import io.devfactory.core.mvc.JspView;
-import io.devfactory.core.mvc.ModelAndView;
+import io.devfactory.core.web.view.JsonView;
+import io.devfactory.core.web.view.JspView;
+import io.devfactory.core.web.view.ModelAndView;
 
 public abstract class AbstractNewController {
 

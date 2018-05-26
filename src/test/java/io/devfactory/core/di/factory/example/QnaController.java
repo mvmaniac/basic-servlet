@@ -3,8 +3,8 @@ package io.devfactory.core.di.factory.example;
 import io.devfactory.core.annotation.Controller;
 import io.devfactory.core.annotation.Inject;
 import io.devfactory.core.annotation.RequestMapping;
-import io.devfactory.core.mvc.ModelAndView;
-import io.devfactory.core.nmvc.AbstractNewController;
+import io.devfactory.core.web.view.ModelAndView;
+import io.devfactory.core.web.mvc.AbstractNewController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

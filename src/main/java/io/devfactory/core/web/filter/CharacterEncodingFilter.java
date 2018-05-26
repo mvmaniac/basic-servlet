@@ -1,4 +1,4 @@
-package io.devfactory.core.filter;
+package io.devfactory.core.web.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

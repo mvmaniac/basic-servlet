@@ -1,6 +1,6 @@
-package io.devfactory.core.nmvc;
+package io.devfactory.core.web.mvc;
 
-import io.devfactory.core.mvc.ModelAndView;
+import io.devfactory.core.web.view.ModelAndView;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -16,7 +16,7 @@ public class AnnotationHandlerMappingTest {
     @Before
     public void setup() {
 
-        handlerMapping = new AnnotationHandlerMapping("io.devfactory.core.nmvc");
+        handlerMapping = new AnnotationHandlerMapping("io.devfactory.core.web.nmvc");
         handlerMapping.initialize();
 
         response = new MockHttpServletResponse();
