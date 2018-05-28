@@ -56,7 +56,9 @@ public class DispatcherServlet extends HttpServlet {
     private Object getHandler(HttpServletRequest request) {
 
         for (HandlerMapping handlerMapping : mappings) {
+
             Object handler = handlerMapping.getHandler(request);
+
             if (handler != null) {
                 return handler;
             }

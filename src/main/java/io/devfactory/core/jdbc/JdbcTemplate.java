@@ -1,7 +1,5 @@
 package io.devfactory.core.jdbc;
 
-import io.devfactory.core.annotation.Component;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class JdbcTemplate {
 
     private DataSource dataSource;
