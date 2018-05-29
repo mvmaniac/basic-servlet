@@ -2,7 +2,7 @@
 <Configuration>
 
     <Properties>
-        <Property name="baseDir">./</Property>
+        <Property name="baseDir">.</Property>
     </Properties>
 
     <Appenders>
@@ -33,7 +33,7 @@
         <Logger name="io.devfactory.next" level="DEBUG" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Root level="DEBUG" additivity="false">
+        <Root level="DEBUG">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
