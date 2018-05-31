@@ -3,4 +3,5 @@
 /.project
 /.idea/
 /target/
+/log/
 basic-servlet.iml
