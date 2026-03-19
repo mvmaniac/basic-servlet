@@ -20,7 +20,7 @@
 		<mysql.version>8.0.28</mysql.version>
 		<junit.version>4.13.1</junit.version>
 		<log4j.version>2.12.1</log4j.version>
-		<tomcat.version>10.1.47</tomcat.version>
+		<tomcat.version>10.1.52</tomcat.version>
 	</properties>
 
 	<dependencies>
